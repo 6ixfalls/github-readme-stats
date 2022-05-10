@@ -1,5 +1,6 @@
 const { getAnimations } = require("../getStyles");
 const { flexLayout, encodeHTML } = require("../common/utils");
+const background = require("./background");
 
 class Card {
   /**
@@ -108,9 +109,9 @@ class Card {
         transform="translate(${this.paddingX}, ${this.paddingY})"
       >
         ${flexLayout({
-          items: [this.titlePrefixIcon && prefixIcon, titleText],
-          gap: 25,
-        }).join("")}
+      items: [this.titlePrefixIcon && prefixIcon, titleText],
+      gap: 25,
+    }).join("")}
       </g>
     `;
   }
@@ -128,9 +129,9 @@ class Card {
             gradientUnits="userSpaceOnUse"
           >
             ${gradients.map((grad, index) => {
-              let offset = (index * 100) / (gradients.length - 1);
-              return `<stop offset="${offset}%" stop-color="#${grad}" />`;
-            })}
+        let offset = (index * 100) / (gradients.length - 1);
+        return `<stop offset="${offset}%" stop-color="#${grad}" />`;
+      })}
           </linearGradient>
         </defs>
         `
@@ -162,11 +163,10 @@ class Card {
           ${this.css}
 
           ${process.env.NODE_ENV === "test" ? "" : getAnimations()}
-          ${
-            this.animations === false
-              ? `* { animation-duration: 0s !important; animation-delay: 0s !important; }`
-              : ""
-          }
+          ${this.animations === false
+        ? `* { animation-duration: 0s !important; animation-delay: 0s !important; }`
+        : ""
+      }
         </style>
 
         ${this.renderGradient()}
@@ -179,21 +179,20 @@ class Card {
           height="99%"
           stroke="${this.colors.borderColor}"
           width="${this.width - 1}"
-          fill="${
-            typeof this.colors.bgColor === "object"
-              ? "url(#gradient)"
-              : this.colors.bgColor
-          }"
+          fill="${typeof this.colors.bgColor === "object"
+        ? "url(#gradient)"
+        : this.colors.bgColor
+      }"
           stroke-opacity="${this.hideBorder ? 0 : 1}"
         />
 
+        ${background.renderBackground(this)}
         ${this.hideTitle ? "" : this.renderTitle()}
 
         <g
           data-testid="main-card-body"
-          transform="translate(0, ${
-            this.hideTitle ? this.paddingX : this.paddingY + 20
-          })"
+          transform="translate(0, ${this.hideTitle ? this.paddingX : this.paddingY + 20
+      })"
         >
           ${body}
         </g>
